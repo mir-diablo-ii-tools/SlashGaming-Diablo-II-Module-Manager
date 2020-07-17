@@ -47,7 +47,12 @@
 
 namespace sgd2fml {
 
-BOOL OnLibraryDetach(HINSTANCE hinstDLL) {
+BOOL OnLibraryDetach(
+    HINSTANCE hinstDLL,
+    std::set<ModLibrary>& mod_libraries
+) {
+  mod_libraries.clear();
+
   return TRUE;
 }
 

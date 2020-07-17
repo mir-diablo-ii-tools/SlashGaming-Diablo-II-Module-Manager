@@ -45,11 +45,52 @@
 
 #include "on_library_attach.hpp"
 
-#include <filesystem>
+#include <cctype>
 
 namespace sgd2fml {
 
-BOOL OnLibraryAttach(HINSTANCE hinstDLL) {
+BOOL OnLibraryAttach(
+    HINSTANCE hinstDLL,
+    std::set<ModLibrary>& mod_libraries
+) {
+  const std::filesystem::path current_path = std::filesystem::current_path();
+  const std::filesystem::path dll_directory_path =
+      current_path / "sgd2fml" / "dll";
+
+  /* Mod directory doesn't exist, so create them and leave. */
+  if (!std::filesystem::exists(dll_directory_path)
+      || !std::filesystem::is_directory(dll_directory_path)) {
+    std::filesystem::create_directories(dll_directory_path);
+
+    return TRUE;
+  }
+
+  /* Load all DLL files in the DLL directory. */
+  std::filesystem::directory_iterator dll_directory_iterator(
+      dll_directory_path
+  );
+
+  for (const auto& file : dll_directory_iterator) {
+    if (!file.is_regular_file()) {
+      continue;
+    }
+
+    /* Check case-insensitive that the file extension is dll. */
+    std::string file_extension = file.path().extension().string();
+
+    for (char& ch : file_extension) {
+      ch = std::tolower(ch);
+    }
+
+    if (file_extension != ".dll") {
+      continue;
+    }
+
+    ModLibrary library(file_extension);
+
+    mod_libraries.insert(std::move(library));
+  }
+
   return TRUE;
 }
 

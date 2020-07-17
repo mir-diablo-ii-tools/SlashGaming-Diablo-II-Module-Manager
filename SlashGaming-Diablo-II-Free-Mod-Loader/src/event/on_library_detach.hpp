@@ -48,9 +48,16 @@
 
 #include <windows.h>
 
+#include <set>
+
+#include "../helper/mod_library.hpp"
+
 namespace sgd2fml {
 
-BOOL OnLibraryDetach(HINSTANCE hinstDLL);
+BOOL OnLibraryDetach(
+    HINSTANCE hinstDLL,
+    std::set<ModLibrary>& mod_libraries
+);
 
 } // namespace sgd2fml
 
