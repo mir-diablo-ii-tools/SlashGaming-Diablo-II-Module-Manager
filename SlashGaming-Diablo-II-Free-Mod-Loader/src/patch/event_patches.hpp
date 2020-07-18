@@ -46,7 +46,7 @@
 #ifndef SGD2FML_PATCH_EVENT_PATCHES_HPP_
 #define SGD2FML_PATCH_EVENT_PATCHES_HPP_
 
-#include "on_create_window_patch.hpp"
+#include "d2gfx_on_create_window_patch.hpp"
 
 namespace sgd2fml {
 
@@ -60,7 +60,7 @@ class EventPatches {
   void Remove();
 
  private:
-  OnCreateWindowPatch on_create_window_patch_;
+  D2GFX_OnCreateWindowPatch d2gfx_on_create_window_patch_;
 };
 
 } // namespace sgd2fml

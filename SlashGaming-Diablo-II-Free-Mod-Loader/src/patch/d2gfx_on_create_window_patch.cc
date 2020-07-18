@@ -43,24 +43,107 @@
  *  work.
  */
 
-#ifndef SGD2FML_PATCH_ON_CREATE_WINDOW_PATCH_HPP_
-#define SGD2FML_PATCH_ON_CREATE_WINDOW_PATCH_HPP_
+#include "d2gfx_on_create_window_patch.hpp"
 
-#include <cstddef>
-
-#include <sgd2mapi.hpp>
+#include "../event/on_create_window.hpp"
+#include "asm_x86_macro.h"
 
 namespace sgd2fml {
+namespace {
 
-class OnCreateWindowPatch : public mapi::GamePatch {
- public:
-  OnCreateWindowPatch();
+extern "C" static void __cdecl D2GFX_OnCreateWindow_Wrapper(HWND window_handle) {
+  // Original code
+  d2::d2gfx::SetWindowHandle(window_handle);
 
- private:
-  static mapi::GamePatch CreatePatch();
-  static std::ptrdiff_t GetPatchOffset(d2::GameVersion game_version);
-};
+  OnCreateWindow(window_handle);
+}
+
+__declspec(naked) static void __cdecl InterceptionFunction_01() {
+  ASM_X86(push ebp);
+  ASM_X86(mov ebp, esp);
+
+  ASM_X86(push eax);
+  ASM_X86(push ecx);
+  ASM_X86(push edx);
+
+  ASM_X86(push eax);
+  ASM_X86(call ASM_X86_FUNC(D2GFX_OnCreateWindow_Wrapper));
+  ASM_X86(add esp, 4);
+
+  ASM_X86(pop edx);
+  ASM_X86(pop ecx);
+  ASM_X86(pop eax);
+
+  ASM_X86(leave);
+  ASM_X86(ret);
+}
+
+} // namespace
+
+D2GFX_OnCreateWindowPatch::D2GFX_OnCreateWindowPatch() :
+    mapi::GamePatch(CreatePatch()) {
+}
+
+mapi::GamePatch D2GFX_OnCreateWindowPatch::CreatePatch() {
+  d2::GameVersion running_game_version = d2::GetRunningGameVersionId();
+
+  mapi::GameAddress patch_address = mapi::GameAddress::FromOffset(
+      mapi::DefaultLibrary::kD2GFX,
+      GetPatchOffset(running_game_version)
+  );
+
+  return mapi::GamePatch::MakeGameBranchPatch(
+      std::move(patch_address),
+      mapi::BranchType::kCall,
+      &InterceptionFunction_01,
+      5
+  );
+}
+
+std::ptrdiff_t D2GFX_OnCreateWindowPatch::GetPatchOffset(
+    d2::GameVersion game_version
+) {
+  switch (game_version) {
+    case d2::GameVersion::k1_00: {
+      return 0x5A70;
+    }
+
+    case d2::GameVersion::k1_02:
+    case d2::GameVersion::k1_03: {
+      return 0x5A60;
+    }
+
+    case d2::GameVersion::k1_05B: {
+      return 0x45A9;
+    }
+
+    case d2::GameVersion::k1_09D:
+    case d2::GameVersion::k1_10: {
+      return 0x46C7;
+    }
+
+    case d2::GameVersion::k1_12A: {
+      return 0x8B7E;
+    }
+
+    case d2::GameVersion::k1_13C: {
+      return 0x87F0;
+    }
+
+    case d2::GameVersion::k1_13D: {
+      return 0xB8E1;
+    }
+
+    case d2::GameVersion::kLod1_14C: {
+      return 0xF2DEA;
+    }
+
+    case d2::GameVersion::kLod1_14D: {
+      return 0xF5839;
+    }
+  }
+
+  return 0;
+}
 
 } // namespace sgd2fml
-
-#endif // SGD2FML_PATCH_ON_CREATE_WINDOW_PATCH_HPP_
