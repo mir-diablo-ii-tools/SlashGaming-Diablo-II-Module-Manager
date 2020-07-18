@@ -67,23 +67,27 @@ class ModLibrary {
   ModLibrary& operator=(const ModLibrary& mod_library) = delete;
   ModLibrary& operator=(ModLibrary&& mod_library) noexcept;
 
+  friend bool operator==(
+      const ModLibrary& lhs,
+      const ModLibrary& rhs
+  ) noexcept;
+
+  friend std::strong_ordering operator<=>(
+      const ModLibrary& lhs,
+      const ModLibrary& rhs
+  ) noexcept;
+
   const std::filesystem::path& library_path() const noexcept;
   HMODULE module_handle() const noexcept;
 
  private:
   std::filesystem::path library_path_;
   HMODULE module_handle_;
+
+  explicit ModLibrary(const std::filesystem::path& library_path);
+
+  void (*on_create_window_function_ptr_)(HWND window_handle);
 };
-
-bool operator==(
-    const ModLibrary& lhs,
-    const ModLibrary& rhs
-) noexcept;
-
-std::strong_ordering operator<=>(
-    const ModLibrary& lhs,
-    const ModLibrary& rhs
-) noexcept;
 
 } // namespace sgd2fml
 

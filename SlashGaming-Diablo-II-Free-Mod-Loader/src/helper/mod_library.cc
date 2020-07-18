@@ -75,14 +75,6 @@ ModLibrary& ModLibrary::operator=(ModLibrary&& mod_library) noexcept {
   return *this;
 }
 
-const std::filesystem::path& ModLibrary::library_path() const noexcept {
-  return this->library_path_;
-}
-
-HMODULE ModLibrary::module_handle() const noexcept {
-  return this->module_handle_;
-}
-
 bool operator==(
     const ModLibrary& lhs,
     const ModLibrary& rhs
@@ -96,13 +88,21 @@ std::strong_ordering operator<=>(
     const ModLibrary& rhs
 ) noexcept {
   std::strong_ordering library_path_cmp_result =
-      lhs.library_path() <=> rhs.library_path();
+      lhs.library_path().compare(rhs.library_path()) <=> 0;
 
   if (library_path_cmp_result != std::strong_ordering::equal) {
     return library_path_cmp_result;
   }
 
   return lhs.module_handle() <=> rhs.module_handle();
+}
+
+const std::filesystem::path& ModLibrary::library_path() const noexcept {
+  return this->library_path_;
+}
+
+HMODULE ModLibrary::module_handle() const noexcept {
+  return this->module_handle_;
 }
 
 } // namespace sgd2fml
