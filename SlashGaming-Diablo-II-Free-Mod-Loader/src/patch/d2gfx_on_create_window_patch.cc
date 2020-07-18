@@ -45,7 +45,7 @@
 
 #include "d2gfx_on_create_window_patch.hpp"
 
-#include "../event/on_create_window.hpp"
+#include "../event/d2gfx_on_create_window.hpp"
 #include "asm_x86_macro.h"
 
 namespace sgd2fml {
@@ -55,7 +55,7 @@ extern "C" static void __cdecl D2GFX_OnCreateWindow_Wrapper(HWND window_handle) 
   // Original code
   d2::d2gfx::SetWindowHandle(window_handle);
 
-  OnCreateWindow(window_handle);
+  D2GFX_OnCreateWindow(window_handle);
 }
 
 __declspec(naked) static void __cdecl InterceptionFunction_01() {

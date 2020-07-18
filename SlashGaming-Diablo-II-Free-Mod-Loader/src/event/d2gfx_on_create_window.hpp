@@ -43,20 +43,15 @@
  *  work.
  */
 
-#include "on_create_window.hpp"
+#ifndef SGD2FML_EVENT_D2GFX_ON_CREATE_WINDOW_HPP_
+#define SGD2FML_EVENT_D2GFX_ON_CREATE_WINDOW_HPP_
 
-#include <algorithm>
-
-#include "../helper/mod_library.hpp"
+#include <windows.h>
 
 namespace sgd2fml {
 
-void OnCreateWindow(HWND window_handle) {
-  std::set<ModLibrary>& mod_libraries = ModLibrary::GetModLibraries();
-
-  for (const ModLibrary& mod_library : mod_libraries) {
-    mod_library.OnCreateWindow(window_handle);
-  }
-}
+void D2GFX_OnCreateWindow(HWND window_handle);
 
 } // namespace sgd2fml
+
+#endif // SGD2FML_EVENT_D2GFX_ON_CREATE_WINDOW_HPP_
