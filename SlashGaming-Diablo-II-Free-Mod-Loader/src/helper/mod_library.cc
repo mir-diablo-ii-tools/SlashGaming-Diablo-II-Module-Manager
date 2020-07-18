@@ -47,16 +47,27 @@
 
 namespace sgd2fml {
 
+std::set<ModLibrary> ModLibrary::mod_libraries;
+
 ModLibrary::ModLibrary(const std::filesystem::path& library_path) :
     library_path_(library_path),
-    module_handle_(LoadLibraryW(library_path_.wstring().data())) {
+    module_handle_(LoadLibraryW(library_path_.wstring().data())),
+    on_create_window_function_ptr_(
+        reinterpret_cast<decltype(on_create_window_function_ptr_)>(
+            GetProcAddress(module_handle_, "OnCreateWindow")
+        )
+    ) {
 }
 
 ModLibrary::ModLibrary(ModLibrary&& mod_library) noexcept :
     library_path_(std::move(mod_library.library_path_)),
-    module_handle_(std::move(mod_library.module_handle_)) {
+    module_handle_(std::move(mod_library.module_handle_)),
+    on_create_window_function_ptr_(
+        std::move(mod_library.on_create_window_function_ptr_)
+    ) {
   mod_library.library_path_ = std::filesystem::path();
   mod_library.module_handle_ = nullptr;
+  mod_library.on_create_window_function_ptr_ = nullptr;
 }
 
 ModLibrary::~ModLibrary() {
@@ -95,6 +106,26 @@ std::strong_ordering operator<=>(
   }
 
   return lhs.module_handle() <=> rhs.module_handle();
+}
+
+void ModLibrary::AddModLibrary(const std::filesystem::path& library_path) {
+  ModLibrary::mod_libraries.insert(ModLibrary(library_path));
+}
+
+void ModLibrary::ClearModLibraries() {
+  ModLibrary::mod_libraries.clear();
+}
+
+std::set<ModLibrary>& ModLibrary::GetModLibraries() {
+  return ModLibrary::mod_libraries;
+}
+
+void ModLibrary::OnCreateWindow(HWND window_handle) const noexcept {
+  if (this->on_create_window_function_ptr_ == nullptr) {
+    return;
+  }
+
+  this->on_create_window_function_ptr_(window_handle);
 }
 
 const std::filesystem::path& ModLibrary::library_path() const noexcept {

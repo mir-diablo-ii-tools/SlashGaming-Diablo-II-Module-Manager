@@ -51,11 +51,11 @@
 #include "event/on_library_detach.hpp"
 #include "helper/mod_library.hpp"
 
+namespace sgd2fml {
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
-
-static std::set<sgd2fml::ModLibrary> mod_libraries;
 
 BOOL WINAPI DllMain(
     HINSTANCE hinstDLL,
@@ -64,11 +64,11 @@ BOOL WINAPI DllMain(
 ) {
   switch (fdwReason) {
     case DLL_PROCESS_ATTACH: {
-      return sgd2fml::OnLibraryAttach(hinstDLL, mod_libraries);
+      return OnLibraryAttach(hinstDLL);
     }
 
     case DLL_PROCESS_DETACH: {
-      return sgd2fml::OnLibraryDetach(hinstDLL, mod_libraries);
+      return OnLibraryDetach(hinstDLL);
     }
   }
 
@@ -78,3 +78,5 @@ BOOL WINAPI DllMain(
 #ifdef __cplusplus
 } // extern "C"
 #endif // __cplusplus
+
+} // namespace sgd2fml

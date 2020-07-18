@@ -48,11 +48,9 @@
 #include <cctype>
 
 namespace sgd2fml {
+namespace {
 
-BOOL OnLibraryAttach(
-    HINSTANCE hinstDLL,
-    std::set<ModLibrary>& mod_libraries
-) {
+static bool LoadLibraries() {
   const std::filesystem::path current_path = std::filesystem::current_path();
   const std::filesystem::path dll_directory_path =
       current_path / "sgd2fml" / "dll";
@@ -62,7 +60,7 @@ BOOL OnLibraryAttach(
       || !std::filesystem::is_directory(dll_directory_path)) {
     std::filesystem::create_directories(dll_directory_path);
 
-    return TRUE;
+    return true;
   }
 
   /* Load all DLL files in the DLL directory. */
@@ -86,12 +84,18 @@ BOOL OnLibraryAttach(
       continue;
     }
 
-    ModLibrary library(file_extension);
-
-    mod_libraries.insert(std::move(library));
+    ModLibrary::AddModLibrary(file);
   }
 
-  return TRUE;
+  return true;
+}
+
+} // namespace
+
+bool OnLibraryAttach(HINSTANCE hinstDLL) {
+  LoadLibraries();
+
+  return true;
 }
 
 } // namespace sgd2fml

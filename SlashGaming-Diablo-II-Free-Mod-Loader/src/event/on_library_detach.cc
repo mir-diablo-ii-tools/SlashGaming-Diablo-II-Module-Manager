@@ -47,13 +47,10 @@
 
 namespace sgd2fml {
 
-BOOL OnLibraryDetach(
-    HINSTANCE hinstDLL,
-    std::set<ModLibrary>& mod_libraries
-) {
-  mod_libraries.clear();
+bool OnLibraryDetach(HINSTANCE hinstDLL) {
+  ModLibrary::GetModLibraries().clear();
 
-  return TRUE;
+  return true;
 }
 
 } // namespace sgd2fml

@@ -54,10 +54,7 @@
 
 namespace sgd2fml {
 
-BOOL OnLibraryDetach(
-    HINSTANCE hinstDLL,
-    std::set<ModLibrary>& mod_libraries
-);
+bool OnLibraryDetach(HINSTANCE hinstDLL);
 
 } // namespace sgd2fml
 

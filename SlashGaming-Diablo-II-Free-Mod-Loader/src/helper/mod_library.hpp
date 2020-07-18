@@ -50,14 +50,13 @@
 
 #include <compare>
 #include <filesystem>
+#include <set>
 
 namespace sgd2fml {
 
 class ModLibrary {
  public:
   ModLibrary() = delete;
-
-  ModLibrary(const std::filesystem::path& library_path);
 
   ModLibrary(const ModLibrary& mod_library) = delete;
   ModLibrary(ModLibrary&& mod_library) noexcept;
@@ -77,10 +76,18 @@ class ModLibrary {
       const ModLibrary& rhs
   ) noexcept;
 
+  static void AddModLibrary(const std::filesystem::path& library_path);
+  static void ClearModLibraries();
+  static std::set<ModLibrary>& GetModLibraries();
+
+  void OnCreateWindow(HWND window_handle) const noexcept;
+
   const std::filesystem::path& library_path() const noexcept;
   HMODULE module_handle() const noexcept;
 
  private:
+  static std::set<ModLibrary> mod_libraries;
+
   std::filesystem::path library_path_;
   HMODULE module_handle_;
 

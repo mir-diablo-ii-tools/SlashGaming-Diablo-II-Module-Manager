@@ -54,10 +54,7 @@
 
 namespace sgd2fml {
 
-BOOL OnLibraryAttach(
-    HINSTANCE hinstDLL,
-    std::set<ModLibrary>& mod_libraries
-);
+bool OnLibraryAttach(HINSTANCE hinstDLL);
 
 } // namespace sgd2fml
 
