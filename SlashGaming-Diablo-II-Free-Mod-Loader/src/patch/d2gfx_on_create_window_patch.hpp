@@ -52,11 +52,18 @@
 
 namespace sgd2fml {
 
-class D2GFX_OnCreateWindowPatch : public mapi::GamePatch {
+class D2GFX_OnCreateWindowPatch {
  public:
   D2GFX_OnCreateWindowPatch();
 
+  ~D2GFX_OnCreateWindowPatch();
+
+  void Apply();
+  void Remove();
+
  private:
+  mapi::GamePatch game_patch_;
+
   static mapi::GamePatch CreatePatch();
   static std::ptrdiff_t GetPatchOffset(d2::GameVersion game_version);
 };

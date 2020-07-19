@@ -81,7 +81,19 @@ __declspec(naked) static void __cdecl InterceptionFunction_01() {
 } // namespace
 
 D2GFX_OnCreateWindowPatch::D2GFX_OnCreateWindowPatch() :
-    mapi::GamePatch(CreatePatch()) {
+    game_patch_(CreatePatch()) {
+}
+
+D2GFX_OnCreateWindowPatch::~D2GFX_OnCreateWindowPatch() {
+  Remove();
+}
+
+void D2GFX_OnCreateWindowPatch::Apply() {
+  this->game_patch_.Apply();
+}
+
+void D2GFX_OnCreateWindowPatch::Remove() {
+  this->game_patch_.Remove();
 }
 
 mapi::GamePatch D2GFX_OnCreateWindowPatch::CreatePatch() {
