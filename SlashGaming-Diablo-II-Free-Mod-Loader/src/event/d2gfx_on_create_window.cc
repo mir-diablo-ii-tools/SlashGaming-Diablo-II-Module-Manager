@@ -55,7 +55,7 @@ void D2GFX_OnCreateWindow(HWND window_handle) {
   std::set<ModLibrary>& mod_libraries = ModLibrary::GetModLibraries();
 
   for (const ModLibrary& mod_library : mod_libraries) {
-    mod_library.OnCreateWindow(window_handle);
+    mod_library.D2GFX_OnCreateWindow(window_handle);
   }
 }
 

@@ -80,7 +80,7 @@ class ModLibrary {
   static void ClearModLibraries();
   static std::set<ModLibrary>& GetModLibraries();
 
-  void OnCreateWindow(HWND window_handle) const noexcept;
+  void D2GFX_OnCreateWindow(HWND window_handle) const noexcept;
 
   const std::filesystem::path& library_path() const noexcept;
   HMODULE module_handle() const noexcept;
@@ -93,7 +93,7 @@ class ModLibrary {
 
   explicit ModLibrary(const std::filesystem::path& library_path);
 
-  void (*on_create_window_function_ptr_)(HWND window_handle);
+  void (*d2gfx_on_create_window_function_ptr_)(HWND window_handle);
 };
 
 } // namespace sgd2fml

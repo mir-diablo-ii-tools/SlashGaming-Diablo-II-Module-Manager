@@ -52,8 +52,8 @@ std::set<ModLibrary> ModLibrary::mod_libraries;
 ModLibrary::ModLibrary(const std::filesystem::path& library_path) :
     library_path_(library_path),
     module_handle_(LoadLibraryW(library_path_.wstring().data())),
-    on_create_window_function_ptr_(
-        reinterpret_cast<decltype(on_create_window_function_ptr_)>(
+    d2gfx_on_create_window_function_ptr_(
+        reinterpret_cast<decltype(d2gfx_on_create_window_function_ptr_)>(
             GetProcAddress(module_handle_, "OnCreateWindow")
         )
     ) {
@@ -62,12 +62,12 @@ ModLibrary::ModLibrary(const std::filesystem::path& library_path) :
 ModLibrary::ModLibrary(ModLibrary&& mod_library) noexcept :
     library_path_(std::move(mod_library.library_path_)),
     module_handle_(std::move(mod_library.module_handle_)),
-    on_create_window_function_ptr_(
-        std::move(mod_library.on_create_window_function_ptr_)
+    d2gfx_on_create_window_function_ptr_(
+        std::move(mod_library.d2gfx_on_create_window_function_ptr_)
     ) {
   mod_library.library_path_ = std::filesystem::path();
   mod_library.module_handle_ = nullptr;
-  mod_library.on_create_window_function_ptr_ = nullptr;
+  mod_library.d2gfx_on_create_window_function_ptr_ = nullptr;
 }
 
 ModLibrary::~ModLibrary() {
@@ -79,11 +79,11 @@ ModLibrary::~ModLibrary() {
 ModLibrary& ModLibrary::operator=(ModLibrary&& mod_library) noexcept {
   library_path_ = std::move(mod_library.library_path_);
   module_handle_ = std::move(mod_library.module_handle_);
-  on_create_window_function_ptr_ = std::move(mod_library.on_create_window_function_ptr_);
+  d2gfx_on_create_window_function_ptr_ = std::move(mod_library.d2gfx_on_create_window_function_ptr_);
 
   mod_library.library_path_ = std::filesystem::path();
   mod_library.module_handle_ = nullptr;
-  mod_library.on_create_window_function_ptr_ = nullptr;
+  mod_library.d2gfx_on_create_window_function_ptr_ = nullptr;
 
   return *this;
 }
@@ -122,12 +122,12 @@ std::set<ModLibrary>& ModLibrary::GetModLibraries() {
   return ModLibrary::mod_libraries;
 }
 
-void ModLibrary::OnCreateWindow(HWND window_handle) const noexcept {
-  if (this->on_create_window_function_ptr_ == nullptr) {
+void ModLibrary::D2GFX_OnCreateWindow(HWND window_handle) const noexcept {
+  if (this->d2gfx_on_create_window_function_ptr_ == nullptr) {
     return;
   }
 
-  this->on_create_window_function_ptr_(window_handle);
+  this->d2gfx_on_create_window_function_ptr_(window_handle);
 }
 
 const std::filesystem::path& ModLibrary::library_path() const noexcept {
