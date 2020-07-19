@@ -47,8 +47,9 @@
 
 namespace sgd2fml {
 
-bool OnLibraryDetach(HINSTANCE hinstDLL) {
+bool OnLibraryDetach(HINSTANCE hinstDLL, EventPatches& event_patches) {
   ModLibrary::GetModLibraries().clear();
+  event_patches.Remove();
 
   return true;
 }

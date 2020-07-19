@@ -51,10 +51,11 @@
 #include <set>
 
 #include "../helper/mod_library.hpp"
+#include "../patch/event_patches.hpp"
 
 namespace sgd2fml {
 
-bool OnLibraryAttach(HINSTANCE hinstDLL);
+bool OnLibraryAttach(HINSTANCE hinstDLL, EventPatches& event_patches);
 
 } // namespace sgd2fml
 

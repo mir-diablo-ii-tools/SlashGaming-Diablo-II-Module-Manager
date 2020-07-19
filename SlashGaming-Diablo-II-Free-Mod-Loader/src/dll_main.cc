@@ -50,6 +50,7 @@
 #include "event/on_library_attach.hpp"
 #include "event/on_library_detach.hpp"
 #include "helper/mod_library.hpp"
+#include "patch/event_patches.hpp"
 
 namespace sgd2fml {
 
@@ -62,13 +63,15 @@ BOOL WINAPI DllMain(
     DWORD fdwReason,
     LPVOID lpvReserved
 ) {
+  static EventPatches event_patches;
+
   switch (fdwReason) {
     case DLL_PROCESS_ATTACH: {
-      return OnLibraryAttach(hinstDLL);
+      return OnLibraryAttach(hinstDLL, event_patches);
     }
 
     case DLL_PROCESS_DETACH: {
-      return OnLibraryDetach(hinstDLL);
+      return OnLibraryDetach(hinstDLL, event_patches);
     }
   }
 

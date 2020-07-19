@@ -92,7 +92,8 @@ static bool LoadLibraries() {
 
 } // namespace
 
-bool OnLibraryAttach(HINSTANCE hinstDLL) {
+bool OnLibraryAttach(HINSTANCE hinstDLL, EventPatches& event_patches) {
+  event_patches.Apply();
   LoadLibraries();
 
   return true;
