@@ -43,61 +43,31 @@
  *  work.
  */
 
-#ifndef SGD2FML_HELPER_MOD_LIBRARY_HPP_
-#define SGD2FML_HELPER_MOD_LIBRARY_HPP_
+#ifndef SGD2FML_PATCH_D2WIN_ON_LOAD_MPQS_PATCH_HPP_
+#define SGD2FML_PATCH_D2WIN_ON_LOAD_MPQS_PATCH_HPP_
 
-#include <windows.h>
+#include <cstddef>
 
-#include <compare>
-#include <filesystem>
-#include <set>
+#include <sgd2mapi.hpp>
 
 namespace sgd2fml {
 
-class ModLibrary {
+class D2Win_OnLoadMpqsPatch {
  public:
-  ModLibrary() = delete;
+  D2Win_OnLoadMpqsPatch();
 
-  ModLibrary(const ModLibrary& mod_library) = delete;
-  ModLibrary(ModLibrary&& mod_library) noexcept;
+  ~D2Win_OnLoadMpqsPatch();
 
-  ~ModLibrary();
-
-  ModLibrary& operator=(const ModLibrary& mod_library) = delete;
-  ModLibrary& operator=(ModLibrary&& mod_library) noexcept;
-
-  friend bool operator==(
-      const ModLibrary& lhs,
-      const ModLibrary& rhs
-  ) noexcept;
-
-  friend std::strong_ordering operator<=>(
-      const ModLibrary& lhs,
-      const ModLibrary& rhs
-  ) noexcept;
-
-  static void AddModLibrary(const std::filesystem::path& library_path);
-  static void ClearModLibraries();
-  static std::set<ModLibrary>& GetModLibraries();
-
-  void D2GFX_OnCreateWindow(HWND window_handle) const noexcept;
-  void D2Win_OnLoadMpqs() const noexcept;
-
-  const std::filesystem::path& library_path() const noexcept;
-  HMODULE module_handle() const noexcept;
+  void Apply();
+  void Remove();
 
  private:
-  static std::set<ModLibrary> mod_libraries;
+  mapi::GamePatch game_patch_;
 
-  std::filesystem::path library_path_;
-  HMODULE module_handle_;
-
-  explicit ModLibrary(const std::filesystem::path& library_path);
-
-  void (*d2gfx_on_create_window_function_ptr_)(HWND window_handle);
-  void (*d2win_on_load_mpqs_function_ptr_)();
+  static mapi::GamePatch CreatePatch();
+  static std::ptrdiff_t GetPatchOffset(d2::GameVersion game_version);
 };
 
 } // namespace sgd2fml
 
-#endif /* SGD2FML_HELPER_MOD_LIBRARY_HPP_ */
+#endif // SGD2FML_PATCH_D2WIN_ON_LOAD_MPQS_PATCH_HPP_

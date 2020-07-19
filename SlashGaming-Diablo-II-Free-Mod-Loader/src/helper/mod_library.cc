@@ -56,6 +56,11 @@ ModLibrary::ModLibrary(const std::filesystem::path& library_path) :
         reinterpret_cast<decltype(d2gfx_on_create_window_function_ptr_)>(
             GetProcAddress(module_handle_, "OnCreateWindow")
         )
+    ),
+    d2win_on_load_mpqs_function_ptr_(
+        reinterpret_cast<decltype(d2win_on_load_mpqs_function_ptr_)>(
+            GetProcAddress(module_handle_, "OnLoadMpqs")
+        )
     ) {
 }
 
@@ -64,10 +69,14 @@ ModLibrary::ModLibrary(ModLibrary&& mod_library) noexcept :
     module_handle_(std::move(mod_library.module_handle_)),
     d2gfx_on_create_window_function_ptr_(
         std::move(mod_library.d2gfx_on_create_window_function_ptr_)
+    ),
+    d2win_on_load_mpqs_function_ptr_(
+        std::move(mod_library.d2win_on_load_mpqs_function_ptr_)
     ) {
   mod_library.library_path_ = std::filesystem::path();
   mod_library.module_handle_ = nullptr;
   mod_library.d2gfx_on_create_window_function_ptr_ = nullptr;
+  mod_library.d2win_on_load_mpqs_function_ptr_ = nullptr;
 }
 
 ModLibrary::~ModLibrary() {
@@ -80,10 +89,12 @@ ModLibrary& ModLibrary::operator=(ModLibrary&& mod_library) noexcept {
   library_path_ = std::move(mod_library.library_path_);
   module_handle_ = std::move(mod_library.module_handle_);
   d2gfx_on_create_window_function_ptr_ = std::move(mod_library.d2gfx_on_create_window_function_ptr_);
+  d2win_on_load_mpqs_function_ptr_ = std::move(mod_library.d2win_on_load_mpqs_function_ptr_);
 
   mod_library.library_path_ = std::filesystem::path();
   mod_library.module_handle_ = nullptr;
   mod_library.d2gfx_on_create_window_function_ptr_ = nullptr;
+  mod_library.d2win_on_load_mpqs_function_ptr_ = nullptr;
 
   return *this;
 }
@@ -128,6 +139,14 @@ void ModLibrary::D2GFX_OnCreateWindow(HWND window_handle) const noexcept {
   }
 
   this->d2gfx_on_create_window_function_ptr_(window_handle);
+}
+
+void ModLibrary::D2Win_OnLoadMpqs() const noexcept {
+  if (this->d2win_on_load_mpqs_function_ptr_ == nullptr) {
+    return;
+  }
+
+  this->d2win_on_load_mpqs_function_ptr_();
 }
 
 const std::filesystem::path& ModLibrary::library_path() const noexcept {

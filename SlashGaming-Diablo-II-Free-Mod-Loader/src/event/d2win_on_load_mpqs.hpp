@@ -43,61 +43,15 @@
  *  work.
  */
 
-#ifndef SGD2FML_HELPER_MOD_LIBRARY_HPP_
-#define SGD2FML_HELPER_MOD_LIBRARY_HPP_
+#ifndef SGD2FML_EVENT_D2WIN_ON_LOAD_MPQS_HPP_
+#define SGD2FML_EVENT_D2WIN_ON_LOAD_MPQS_HPP_
 
 #include <windows.h>
 
-#include <compare>
-#include <filesystem>
-#include <set>
-
 namespace sgd2fml {
 
-class ModLibrary {
- public:
-  ModLibrary() = delete;
-
-  ModLibrary(const ModLibrary& mod_library) = delete;
-  ModLibrary(ModLibrary&& mod_library) noexcept;
-
-  ~ModLibrary();
-
-  ModLibrary& operator=(const ModLibrary& mod_library) = delete;
-  ModLibrary& operator=(ModLibrary&& mod_library) noexcept;
-
-  friend bool operator==(
-      const ModLibrary& lhs,
-      const ModLibrary& rhs
-  ) noexcept;
-
-  friend std::strong_ordering operator<=>(
-      const ModLibrary& lhs,
-      const ModLibrary& rhs
-  ) noexcept;
-
-  static void AddModLibrary(const std::filesystem::path& library_path);
-  static void ClearModLibraries();
-  static std::set<ModLibrary>& GetModLibraries();
-
-  void D2GFX_OnCreateWindow(HWND window_handle) const noexcept;
-  void D2Win_OnLoadMpqs() const noexcept;
-
-  const std::filesystem::path& library_path() const noexcept;
-  HMODULE module_handle() const noexcept;
-
- private:
-  static std::set<ModLibrary> mod_libraries;
-
-  std::filesystem::path library_path_;
-  HMODULE module_handle_;
-
-  explicit ModLibrary(const std::filesystem::path& library_path);
-
-  void (*d2gfx_on_create_window_function_ptr_)(HWND window_handle);
-  void (*d2win_on_load_mpqs_function_ptr_)();
-};
+void D2Win_OnLoadMpqs();
 
 } // namespace sgd2fml
 
-#endif /* SGD2FML_HELPER_MOD_LIBRARY_HPP_ */
+#endif // SGD2FML_EVENT_D2WIN_ON_LOAD_MPQS_HPP_
