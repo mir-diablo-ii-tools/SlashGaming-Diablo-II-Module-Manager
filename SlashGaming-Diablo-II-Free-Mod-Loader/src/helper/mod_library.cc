@@ -54,12 +54,12 @@ ModLibrary::ModLibrary(const std::filesystem::path& library_path) :
     module_handle_(LoadLibraryW(library_path_.wstring().data())),
     d2gfx_on_create_window_function_ptr_(
         reinterpret_cast<decltype(d2gfx_on_create_window_function_ptr_)>(
-            GetProcAddress(module_handle_, "OnCreateWindow")
+            GetProcAddress(module_handle_, "D2GFX_OnCreateWindow")
         )
     ),
     d2win_on_load_mpqs_function_ptr_(
         reinterpret_cast<decltype(d2win_on_load_mpqs_function_ptr_)>(
-            GetProcAddress(module_handle_, "OnLoadMpqs")
+            GetProcAddress(module_handle_, "D2Win_OnLoadMpqs")
         )
     ) {
 }
