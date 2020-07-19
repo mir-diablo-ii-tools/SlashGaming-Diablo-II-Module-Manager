@@ -79,9 +79,11 @@ ModLibrary::~ModLibrary() {
 ModLibrary& ModLibrary::operator=(ModLibrary&& mod_library) noexcept {
   library_path_ = std::move(mod_library.library_path_);
   module_handle_ = std::move(mod_library.module_handle_);
+  on_create_window_function_ptr_ = std::move(mod_library.on_create_window_function_ptr_);
 
   mod_library.library_path_ = std::filesystem::path();
   mod_library.module_handle_ = nullptr;
+  mod_library.on_create_window_function_ptr_ = nullptr;
 
   return *this;
 }
