@@ -55,10 +55,12 @@ EventPatches::~EventPatches() {
 
 void EventPatches::Apply() {
   this->d2gfx_on_create_window_patch_.Apply();
+  this->d2win_on_load_mpqs_patch_.Apply();
 }
 
 void EventPatches::Remove() {
   this->d2gfx_on_create_window_patch_.Remove();
+  this->d2win_on_load_mpqs_patch_.Remove();
 }
 
 } // namespace sgd2fml

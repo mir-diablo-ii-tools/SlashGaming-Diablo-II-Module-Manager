@@ -47,6 +47,7 @@
 #define SGD2FML_PATCH_EVENT_PATCHES_HPP_
 
 #include "d2gfx_on_create_window_patch.hpp"
+#include "d2win_on_load_mpqs_patch.hpp"
 
 namespace sgd2fml {
 
@@ -61,6 +62,7 @@ class EventPatches {
 
  private:
   D2GFX_OnCreateWindowPatch d2gfx_on_create_window_patch_;
+  D2Win_OnLoadMpqsPatch d2win_on_load_mpqs_patch_;
 };
 
 } // namespace sgd2fml
