@@ -93,10 +93,13 @@ progress.marks
 *.db
 
 # MinGW Makefiles
+*.c.obj.d
 *.cpp.obj.d
 
 Makefile
 Makefile2
+
+compiler_depend.internal
 
 # Visual Studio 2005 Solution / Project Files
 *.vcproj
