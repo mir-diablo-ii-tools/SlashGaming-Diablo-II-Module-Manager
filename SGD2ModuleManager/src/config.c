@@ -22,7 +22,7 @@
 #include "config/config_ini.h"
 #include "config/config_struct.h"
 
-#define GLOBAL_CONFIG_PATH L"SGD2ModuleManager.ini"
+#define GLOBAL_CONFIG_PATH L"./SGD2ModuleManager.ini"
 
 static struct Config global_config;
 

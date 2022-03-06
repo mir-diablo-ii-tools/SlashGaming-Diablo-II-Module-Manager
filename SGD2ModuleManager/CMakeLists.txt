@@ -35,7 +35,7 @@ endif (MINGW)
 set(RESOURCE_FILES
 )
 
-set(CONFIG_PARSER_SOURCE_FILES
+set(CONFIG_PARSER
     "src/config/config_default.c"
     "src/config/config_default.h"
 
@@ -53,7 +53,7 @@ set(CONFIG_PARSER_SOURCE_FILES
 set(SOURCE_FILES
     ${RESOURCE_FILES}
 
-    ${CONFIG_PARSER_SOURCE_FILES}
+    ${CONFIG_PARSER}
 
     "src/dll_main.c"
     "src/license.c"
