@@ -39,6 +39,8 @@ set(SOURCE_FILES
     ${RESOURCE_FILES}
 
     "src/dll_main.c"
+    "src/license.c"
+    "src/license.h"
 )
 
 # Output DLL
