@@ -50,10 +50,18 @@ set(CONFIG_PARSER
     "src/config.h"
 )
 
+set(FILE_OPERATION
+    "src/file/file_count.c"
+    "src/file/file_count.h"
+    "src/file/file_list.c"
+    "src/file/file_list.h"
+)
+
 set(SOURCE_FILES
     ${RESOURCE_FILES}
 
     ${CONFIG_PARSER}
+    ${FILE_OPERATION}
 
     "src/dll_main.c"
 
@@ -68,5 +76,7 @@ set(SOURCE_FILES
 
 # Output DLL
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+
+target_link_libraries(${PROJECT_NAME} shlwapi)
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCE_FILES})
