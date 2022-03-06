@@ -25,7 +25,7 @@
  * External
  */
 
-struct Config Config_kDefault = {
+const struct Config Config_kDefault = {
   /* int is_offline_mode */
   0
 };

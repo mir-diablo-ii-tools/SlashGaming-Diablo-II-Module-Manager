@@ -26,7 +26,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-extern struct Config Config_kDefault;
+extern const struct Config Config_kDefault;
 
 #ifdef __cplusplus
 } /* extern "C" */
