@@ -56,6 +56,12 @@ set(SOURCE_FILES
     ${CONFIG_PARSER}
 
     "src/dll_main.c"
+
+    "src/error.c"
+    "src/error.h"
+
+    "src/filew.h"
+
     "src/license.c"
     "src/license.h"
 )
