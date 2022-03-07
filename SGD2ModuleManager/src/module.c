@@ -78,7 +78,7 @@ int Module_LocateSignature(
     struct Module* module,
     wchar_t* path,
     const wchar_t* signatures_dir) {
-  BOOL is_path_append_success;
+  BOOL is_path_combine_success;
   BOOL is_path_rename_extension_success;
 
   const wchar_t* module_file_name;
@@ -100,9 +100,11 @@ int Module_LocateSignature(
   }
 
   /* Create the signature path string. */
-  wcscpy(signature_path, signatures_dir);
-  is_path_append_success = PathAppendW(signature_path, module_file_name);
-  if (!is_path_append_success) {
+  is_path_combine_success = PathCombineW(
+      signature_path,
+      signatures_dir,
+      module_file_name);
+  if (!is_path_combine_success) {
     return 0;
   }
 
