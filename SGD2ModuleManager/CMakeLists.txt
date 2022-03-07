@@ -57,11 +57,17 @@ set(FILE_OPERATION
     "src/file/file_list.h"
 )
 
+set(MODULE
+    "src/module.c"
+    "src/module.h"
+)
+
 set(SOURCE_FILES
     ${RESOURCE_FILES}
 
     ${CONFIG_PARSER}
     ${FILE_OPERATION}
+    ${MODULE}
 
     "src/dll_main.c"
 
