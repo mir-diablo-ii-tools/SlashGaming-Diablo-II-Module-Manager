@@ -27,7 +27,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-size_t File_GetCountFromDirectory(
+size_t File_ListPathsFromDirectory(
     wchar_t** paths,
     size_t paths_capacity,
     const wchar_t* directory,
