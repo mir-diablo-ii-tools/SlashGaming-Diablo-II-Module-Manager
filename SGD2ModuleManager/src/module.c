@@ -118,6 +118,22 @@ int Module_LocateSignature(
   return 1;
 }
 
+int Module_VerifySignature(
+    const struct Module* module,
+    const wchar_t* signatures_dir) {
+  int is_locate_signature_success;
+
+  wchar_t signature_path[MAX_PATH];
+
+  is_locate_signature_success = Module_LocateSignature(
+      module,
+      signature_path,
+      signatures_dir);
+  if (!is_locate_signature_success) {
+    return 0;
+  }
+}
+
 int Module_IsValid(const wchar_t* path) {
   return IsValidFile(path, MODULE_EXTENSION);
 }

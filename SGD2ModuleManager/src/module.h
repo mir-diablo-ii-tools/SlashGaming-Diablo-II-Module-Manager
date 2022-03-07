@@ -49,6 +49,10 @@ int Module_LocateSignature(
     wchar_t* path,
     const wchar_t* signatures_dir);
 
+int Module_VerifySignature(
+    const struct Module* module,
+    const wchar_t* signatures_dir);
+
 int Module_IsValid(const wchar_t* path);
 
 int Module_IsSignatureValid(const wchar_t* path);
