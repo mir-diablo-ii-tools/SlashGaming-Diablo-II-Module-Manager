@@ -75,10 +75,10 @@ void Module_Load(struct Module* module) {
 }
 
 int Module_LocateSignature(
-    struct Module* module,
+    const struct Module* module,
     wchar_t* path,
     const wchar_t* signatures_dir) {
-  BOOL is_path_combine_success;
+  wchar_t* path_combine_result;
   BOOL is_path_rename_extension_success;
 
   const wchar_t* module_file_name;
@@ -100,11 +100,11 @@ int Module_LocateSignature(
   }
 
   /* Create the signature path string. */
-  is_path_combine_success = PathCombineW(
+  path_combine_result = PathCombineW(
       signature_path,
       signatures_dir,
       module_file_name);
-  if (!is_path_combine_success) {
+  if (path_combine_result == NULL) {
     return 0;
   }
 

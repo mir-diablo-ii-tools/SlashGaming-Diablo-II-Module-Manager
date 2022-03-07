@@ -45,7 +45,7 @@ void Module_Deinit(struct Module* module);
 void Module_Load(struct Module* module);
 
 int Module_LocateSignature(
-    struct Module* module,
+    const struct Module* module,
     wchar_t* path,
     const wchar_t* signatures_dir);
 
