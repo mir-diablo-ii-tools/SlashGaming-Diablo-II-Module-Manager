@@ -19,29 +19,25 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#include <windows.h>
+#ifndef SGD2MODULEMANAGER_HASH_HASH_SHA384_H_
+#define SGD2MODULEMANAGER_HASH_HASH_SHA384_H_
 
-#include "hash/hash_crypt_provider.h"
-#include "hash/hash_crypt_public_key.h"
+#include <wchar.h>
 
-BOOL WINAPI DllMain(HINSTANCE dll_handle, DWORD reason, LPVOID reserved) {
-  switch (reason) {
-    case DLL_PROCESS_ATTACH: {
-      Hash_GlobalCryptProvider_Init();
-      Hash_GlobalCryptPublicKey_Init();
-      break;
-    }
+#define HASH_SHA384_SIGNATURE_FILE_EXTENSION L".sha384sig"
 
-    case DLL_PROCESS_DETACH: {
-      Hash_GlobalCryptPublicKey_Deinit();
-      Hash_GlobalCryptProvider_Deinit();
-      break;
-    }
+enum {
+  HashSha384_kSignatureFileExtensionLength =
+      sizeof(HASH_SHA384_SIGNATURE_FILE_EXTENSION)
+          / sizeof(HASH_SHA384_SIGNATURE_FILE_EXTENSION[0])
+          - 1,
+  HashSha384_kSize = 48,
+};
 
-    default: {
-      break;
-    }
-  }
+void HashSha384_GenerateFromFile(unsigned char* hash, const wchar_t* path);
 
-  return TRUE;
-}
+int HashSha384_VerifySignatureFile(
+    const wchar_t* content_path,
+    const wchar_t* signature_path);
+
+#endif /* SGD2MODULEMANAGER_HASH_HASH_SHA384_H_ */

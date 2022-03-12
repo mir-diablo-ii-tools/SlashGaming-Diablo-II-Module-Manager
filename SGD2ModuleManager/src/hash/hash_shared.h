@@ -19,29 +19,21 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#ifndef SGD2MODULEMANAGER_HASH_HASH_SHARED_H_
+#define SGD2MODULEMANAGER_HASH_HASH_SHARED_H_
+
+#include <wchar.h>
 #include <windows.h>
 
-#include "hash/hash_crypt_provider.h"
-#include "hash/hash_crypt_public_key.h"
+void Hash_GenerateFromFile(
+    unsigned char* hash,
+    DWORD hash_size,
+    ALG_ID alg,
+    const wchar_t* path);
 
-BOOL WINAPI DllMain(HINSTANCE dll_handle, DWORD reason, LPVOID reserved) {
-  switch (reason) {
-    case DLL_PROCESS_ATTACH: {
-      Hash_GlobalCryptProvider_Init();
-      Hash_GlobalCryptPublicKey_Init();
-      break;
-    }
+int Hash_VerifySignatureFile(
+    ALG_ID alg,
+    const wchar_t* content_path,
+    const wchar_t* signature_path);
 
-    case DLL_PROCESS_DETACH: {
-      Hash_GlobalCryptPublicKey_Deinit();
-      Hash_GlobalCryptProvider_Deinit();
-      break;
-    }
-
-    default: {
-      break;
-    }
-  }
-
-  return TRUE;
-}
+#endif /* SGD2MODULEMANAGER_HASH_HASH_SHARED_H_ */

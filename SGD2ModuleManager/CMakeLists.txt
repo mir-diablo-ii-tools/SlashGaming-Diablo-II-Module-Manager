@@ -59,6 +59,19 @@ set(FILE_OPERATION
     "src/file/file_list.h"
 )
 
+set(HASH
+    "src/hash/hash_crypt_provider.c"
+    "src/hash/hash_crypt_provider.h"
+    "src/hash/hash_crypt_public_key.c"
+    "src/hash/hash_crypt_public_key.h"
+    "src/hash/hash_sha1.c"
+    "src/hash/hash_sha1.h"
+    "src/hash/hash_sha384.c"
+    "src/hash/hash_sha384.h"
+    "src/hash/hash_shared.c"
+    "src/hash/hash_shared.h"
+)
+
 set(MODULE
     "src/module.c"
     "src/module.h"
@@ -69,6 +82,7 @@ set(SOURCE_FILES
 
     ${CONFIG_PARSER}
     ${FILE_OPERATION}
+    ${HASH}
     ${MODULE}
 
     "src/dll_main.c"

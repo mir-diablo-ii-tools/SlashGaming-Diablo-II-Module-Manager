@@ -19,29 +19,22 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#include <windows.h>
+#include "hash_sha384.h"
 
-#include "hash/hash_crypt_provider.h"
-#include "hash/hash_crypt_public_key.h"
+#include <wchar.h>
 
-BOOL WINAPI DllMain(HINSTANCE dll_handle, DWORD reason, LPVOID reserved) {
-  switch (reason) {
-    case DLL_PROCESS_ATTACH: {
-      Hash_GlobalCryptProvider_Init();
-      Hash_GlobalCryptPublicKey_Init();
-      break;
-    }
+#include "hash_shared.h"
 
-    case DLL_PROCESS_DETACH: {
-      Hash_GlobalCryptPublicKey_Deinit();
-      Hash_GlobalCryptProvider_Deinit();
-      break;
-    }
+/**
+ * External
+ */
 
-    default: {
-      break;
-    }
-  }
+void HashSha384_GenerateFromFile(unsigned char* hash, const wchar_t* path) {
+  Hash_GenerateFromFile(hash, HashSha384_kSize, CALG_SHA_384, path);
+}
 
-  return TRUE;
+int HashSha384_VerifySignatureFile(
+    const wchar_t* content_path,
+    const wchar_t* signature_path) {
+  return Hash_VerifySignatureFile(CALG_SHA_384, content_path, signature_path);
 }

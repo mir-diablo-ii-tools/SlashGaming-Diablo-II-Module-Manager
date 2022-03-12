@@ -19,29 +19,15 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#ifndef SGD2MODULEMANAGER_HASH_HASH_CRYPT_PROVIDER_H_
+#define SGD2MODULEMANAGER_HASH_HASH_CRYPT_PROVIDER_H_
+
 #include <windows.h>
 
-#include "hash/hash_crypt_provider.h"
-#include "hash/hash_crypt_public_key.h"
+void Hash_GlobalCryptProvider_Init(void);
 
-BOOL WINAPI DllMain(HINSTANCE dll_handle, DWORD reason, LPVOID reserved) {
-  switch (reason) {
-    case DLL_PROCESS_ATTACH: {
-      Hash_GlobalCryptProvider_Init();
-      Hash_GlobalCryptPublicKey_Init();
-      break;
-    }
+void Hash_GlobalCryptProvider_Deinit(void);
 
-    case DLL_PROCESS_DETACH: {
-      Hash_GlobalCryptPublicKey_Deinit();
-      Hash_GlobalCryptProvider_Deinit();
-      break;
-    }
+HCRYPTPROV Hash_GlobalCryptProvider_Get(void);
 
-    default: {
-      break;
-    }
-  }
-
-  return TRUE;
-}
+#endif /* SGD2MODULEMANAGER_HASH_HASH_CRYPT_PROVIDER_H_ */
