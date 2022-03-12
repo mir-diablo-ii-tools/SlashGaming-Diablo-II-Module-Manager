@@ -51,6 +51,8 @@ set(CONFIG_PARSER
 )
 
 set(FILE_OPERATION
+    "src/file/file_content.c"
+    "src/file/file_content.h"
     "src/file/file_count.c"
     "src/file/file_count.h"
     "src/file/file_list.c"
