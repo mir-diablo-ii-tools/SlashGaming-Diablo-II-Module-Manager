@@ -242,7 +242,7 @@ int Hash_VerifySignatureFile(
     DWORD last_error;
 
     last_error = GetLastError();
-    if (last_error == NTE_BAD_SIGNATURE) {
+    if (last_error != NTE_BAD_SIGNATURE) {
       Error_ExitWithFormatMessage(
           __FILEW__,
           __LINE__,
