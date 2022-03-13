@@ -87,6 +87,28 @@ void Module_Load(struct Module* module) {
   module->handle = LoadLibraryW(module->path);
 }
 
+int Module_LoadVerified(struct Module* module, const wchar_t* signatures_dir) {
+  int is_locate_signature_success;
+  int is_verified;
+
+  wchar_t signature_path[MAX_PATH];
+
+  is_locate_signature_success = Module_LocateSignature(
+      module,
+      signature_path,
+      signatures_dir);
+  if (!is_locate_signature_success) {
+    return 0;
+  }
+
+  is_verified = Module_VerifySignature(module, signature_path);
+  if (is_verified) {
+    Module_Load(module);
+  }
+
+  return is_verified;
+}
+
 int Module_LocateSignature(
     const struct Module* module,
     wchar_t* path,
