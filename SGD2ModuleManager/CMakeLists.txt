@@ -77,6 +77,11 @@ set(MODULE
     "src/module.h"
 )
 
+set(MODULE_MANAGER
+    "src/module_manager_internal.c"
+    "src/module_manager_internal.h"
+)
+
 set(SOURCE_FILES
     ${RESOURCE_FILES}
 
@@ -84,6 +89,7 @@ set(SOURCE_FILES
     ${FILE_OPERATION}
     ${HASH}
     ${MODULE}
+    ${MODULE_MANAGER}
 
     "src/dll_main.c"
 
