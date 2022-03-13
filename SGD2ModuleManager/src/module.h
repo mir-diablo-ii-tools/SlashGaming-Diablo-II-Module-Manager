@@ -23,16 +23,6 @@
 #include <wchar.h>
 #include <windows.h>
 
-#define MODULE_EXTENSION L".dll"
-#define MODULE_SIGNATURE_EXTENSION L".sig"
-
-enum {
-  Module_kExtensionLength = sizeof(MODULE_EXTENSION)
-      / sizeof(MODULE_EXTENSION[0]) - 1,
-  Module_kSignatureExtensionLength = sizeof(MODULE_SIGNATURE_EXTENSION)
-      / sizeof(MODULE_SIGNATURE_EXTENSION[0]) - 1,
-};
-
 struct Module {
   wchar_t path[MAX_PATH];
   HMODULE handle;
@@ -51,7 +41,7 @@ int Module_LocateSignature(
 
 int Module_VerifySignature(
     const struct Module* module,
-    const wchar_t* signatures_dir);
+    const wchar_t* signature_path);
 
 int Module_IsValid(const wchar_t* path);
 
