@@ -83,6 +83,9 @@ struct Module Module_Init(const wchar_t* path) {
 }
 
 void Module_Deinit(struct Module* module) {
+  if (module->handle != NULL) {
+    FreeLibrary(module->handle);
+  }
 }
 
 void Module_Load(struct Module* module) {
