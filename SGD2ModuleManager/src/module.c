@@ -77,6 +77,8 @@ struct Module Module_Init(const wchar_t* path) {
   module.path[0] = L'\0';
   wcsncat(module.path, path, MAX_PATH - 1);
 
+  module.handle = NULL;
+
   return module;
 }
 
