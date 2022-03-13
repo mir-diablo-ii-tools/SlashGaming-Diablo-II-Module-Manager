@@ -108,7 +108,7 @@ size_t File_ListPathsFromDirectory(
     Error_ExitWithFormatMessage(
         __FILEW__,
         __LINE__,
-        L"FindClose failed with error code 0x%X for directory.",
+        L"FindClose failed with error code 0x%X for directory %ls.",
         GetLastError(),
         directory);
     goto bad;
