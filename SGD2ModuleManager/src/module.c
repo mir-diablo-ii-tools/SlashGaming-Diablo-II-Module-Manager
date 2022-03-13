@@ -77,10 +77,15 @@ struct Module Module_Init(const wchar_t* path) {
   module.path[0] = L'\0';
   wcsncat(module.path, path, MAX_PATH - 1);
 
+  module.handle = NULL;
+
   return module;
 }
 
 void Module_Deinit(struct Module* module) {
+  if (module->handle != NULL) {
+    FreeLibrary(module->handle);
+  }
 }
 
 void Module_Load(struct Module* module) {
@@ -111,7 +116,7 @@ int Module_LoadVerified(struct Module* module, const wchar_t* signatures_dir) {
 
 int Module_LocateSignature(
     const struct Module* module,
-    wchar_t* path,
+    wchar_t* signature_path,
     const wchar_t* signatures_dir) {
   wchar_t* path_combine_result;
   BOOL is_path_rename_extension_success;
@@ -120,7 +125,6 @@ int Module_LocateSignature(
   size_t signatures_dir_length;
   size_t module_file_name_length;
   size_t signature_path_length;
-  wchar_t signature_path[MAX_PATH];
   const wchar_t* signature_extension;
 
   module_file_name = PathFindFileNameW(module->path);
