@@ -80,6 +80,9 @@ set(SOURCE_FILES
 
     "src/license.c"
     "src/license.h"
+
+    "src/win9x.c"
+    "src/win9x.h"
 )
 
 # Output DLL
