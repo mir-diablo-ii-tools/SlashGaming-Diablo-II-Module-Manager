@@ -34,6 +34,8 @@ void Module_Deinit(struct Module* module);
 
 void Module_Load(struct Module* module);
 
+int Module_LoadVerified(struct Module* module, const wchar_t* signatures_dir);
+
 int Module_LocateSignature(
     const struct Module* module,
     wchar_t* path,
