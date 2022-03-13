@@ -38,7 +38,7 @@ int Module_LoadVerified(struct Module* module, const wchar_t* signatures_dir);
 
 int Module_LocateSignature(
     const struct Module* module,
-    wchar_t* path,
+    wchar_t* signature_path,
     const wchar_t* signatures_dir);
 
 int Module_VerifySignature(
