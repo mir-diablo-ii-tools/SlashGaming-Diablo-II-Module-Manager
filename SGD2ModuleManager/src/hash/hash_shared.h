@@ -2,6 +2,8 @@
  * SlashGaming Diablo II Module Manager
  * Copyright (C) 2020-2022  Mir Drualga
  *
+ * This file is part of SlashGaming Diablo II Module Manager.
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -17,34 +19,21 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#ifndef SGD2MODULEMANAGER_MODULE_H_
-#define SGD2MODULEMANAGER_MODULE_H_
+#ifndef SGD2MODULEMANAGER_HASH_HASH_SHARED_H_
+#define SGD2MODULEMANAGER_HASH_HASH_SHARED_H_
 
 #include <wchar.h>
 #include <windows.h>
 
-struct Module {
-  wchar_t path[MAX_PATH];
-  HMODULE handle;
-};
+void Hash_GenerateFromFile(
+    unsigned char* hash,
+    DWORD hash_size,
+    ALG_ID alg,
+    const wchar_t* path);
 
-struct Module Module_Init(const wchar_t* path);
-
-void Module_Deinit(struct Module* module);
-
-void Module_Load(struct Module* module);
-
-int Module_LocateSignature(
-    const struct Module* module,
-    wchar_t* path,
-    const wchar_t* signatures_dir);
-
-int Module_VerifySignature(
-    const struct Module* module,
+int Hash_VerifySignatureFile(
+    ALG_ID alg,
+    const wchar_t* content_path,
     const wchar_t* signature_path);
 
-int Module_IsValid(const wchar_t* path);
-
-int Module_IsSignatureValid(const wchar_t* path);
-
-#endif /* SGD2MODULEMANAGER_MODULE_H_ */
+#endif /* SGD2MODULEMANAGER_HASH_HASH_SHARED_H_ */

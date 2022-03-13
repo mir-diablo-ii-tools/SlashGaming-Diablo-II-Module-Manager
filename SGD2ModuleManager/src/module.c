@@ -24,6 +24,19 @@
 #include <windows.h>
 #include <shlwapi.h>
 
+#include "hash/hash_sha1.h"
+#include "hash/hash_sha384.h"
+#include "win9x.h"
+
+#define MODULE_EXTENSION L".dll"
+
+enum {
+  Module_kExtensionLength = sizeof(MODULE_EXTENSION)
+      / sizeof(MODULE_EXTENSION[0])
+      - 1,
+  Module_kSignatureExtensionLength = HashSha384_kSignatureFileExtensionLength,
+};
+
 static int IsValidFile(
     const wchar_t* path,
     const wchar_t* expected_extension) {
@@ -86,6 +99,7 @@ int Module_LocateSignature(
   size_t module_file_name_length;
   size_t signature_path_length;
   wchar_t signature_path[MAX_PATH];
+  const wchar_t* signature_extension;
 
   module_file_name = PathFindFileNameW(module->path);
 
@@ -108,9 +122,15 @@ int Module_LocateSignature(
     return 0;
   }
 
+  if (Win9x_IsRunningOs()) {
+    signature_extension = HASH_SHA1_SIGNATURE_FILE_EXTENSION;
+  } else {
+    signature_extension = HASH_SHA384_SIGNATURE_FILE_EXTENSION;
+  }
+
   is_path_rename_extension_success = PathRenameExtensionW(
       signature_path,
-      MODULE_SIGNATURE_EXTENSION);
+      signature_extension);
   if (!is_path_rename_extension_success) {
     return 0;
   }
@@ -118,10 +138,29 @@ int Module_LocateSignature(
   return 1;
 }
 
+int Module_VerifySignature(
+    const struct Module* module,
+    const wchar_t* signature_path) {
+  int is_locate_signature_success;
+
+  if (Win9x_IsRunningOs()) {
+    return HashSha1_VerifySignatureFile(module->path, signature_path);
+  } else {
+    return HashSha384_VerifySignatureFile(module->path, signature_path);
+  }
+}
+
 int Module_IsValid(const wchar_t* path) {
   return IsValidFile(path, MODULE_EXTENSION);
 }
 
 int Module_IsSignatureValid(const wchar_t* path) {
-  return IsValidFile(path, MODULE_SIGNATURE_EXTENSION);
+  const wchar_t* module_signature_extension;
+  if (Win9x_IsRunningOs()) {
+    module_signature_extension = HASH_SHA1_SIGNATURE_FILE_EXTENSION;
+  } else {
+    module_signature_extension = HASH_SHA384_SIGNATURE_FILE_EXTENSION;
+  }
+
+  return IsValidFile(path, module_signature_extension);
 }
