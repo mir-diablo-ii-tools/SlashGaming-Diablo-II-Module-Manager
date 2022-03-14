@@ -19,33 +19,38 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#include "../../include/sgd2mm/module_manager.h"
+
+#include <stddef.h>
 #include <windows.h>
 
-#include "module_manager/module_manager_global.h"
-#include "module_manager/module_manager_struct.h"
-#include "hash/hash_crypt_provider.h"
-#include "hash/hash_crypt_public_key.h"
+#include "../module_manager/module_manager_global.h"
 
-BOOL WINAPI DllMain(HINSTANCE dll_handle, DWORD reason, LPVOID reserved) {
-  switch (reason) {
-    case DLL_PROCESS_ATTACH: {
-      global_module_manager = ModuleManager_Init(MODULE_MANAGER_DIR);
-      Hash_GlobalCryptProvider_Init();
-      Hash_GlobalCryptPublicKey_Init();
-      break;
+/**
+ * External
+ */
+
+size_t Sgd2mm_GetModulesFunctions(
+    FARPROC* functions,
+    const char* exported_name) {
+  size_t i;
+  size_t count;
+
+  count = 0;
+  for (i = 0; i < global_module_manager.modules_count; ++i) {
+    functions[i] = GetProcAddress(
+        global_module_manager.modules[i].handle,
+        exported_name);
+    if (functions[i] == NULL) {
+      continue;
     }
 
-    case DLL_PROCESS_DETACH: {
-      Hash_GlobalCryptPublicKey_Deinit();
-      Hash_GlobalCryptProvider_Deinit();
-      ModuleManager_Deinit(&global_module_manager);
-      break;
-    }
-
-    default: {
-      break;
-    }
+    ++count;
   }
 
-  return TRUE;
+  return count;
+}
+
+size_t Sgd2mm_GetModulesCount(void) {
+  return global_module_manager.modules_count;
 }

@@ -19,33 +19,27 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#ifndef SGD2MODULEMANAGER_SGD2MM_MODULE_MANAGER_H_
+#define SGD2MODULEMANAGER_SGD2MM_MODULE_MANAGER_H_
+
+#include <stddef.h>
 #include <windows.h>
 
-#include "module_manager/module_manager_global.h"
-#include "module_manager/module_manager_struct.h"
-#include "hash/hash_crypt_provider.h"
-#include "hash/hash_crypt_public_key.h"
+#include "../dllapi_define.inc"
 
-BOOL WINAPI DllMain(HINSTANCE dll_handle, DWORD reason, LPVOID reserved) {
-  switch (reason) {
-    case DLL_PROCESS_ATTACH: {
-      global_module_manager = ModuleManager_Init(MODULE_MANAGER_DIR);
-      Hash_GlobalCryptProvider_Init();
-      Hash_GlobalCryptPublicKey_Init();
-      break;
-    }
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-    case DLL_PROCESS_DETACH: {
-      Hash_GlobalCryptPublicKey_Deinit();
-      Hash_GlobalCryptProvider_Deinit();
-      ModuleManager_Deinit(&global_module_manager);
-      break;
-    }
+DLLAPI size_t Sgd2mm_GetModulesFunctions(
+    FARPROC* functions,
+    const char* exported_name);
 
-    default: {
-      break;
-    }
-  }
+DLLAPI size_t Sgd2mm_GetModulesCount(void);
 
-  return TRUE;
-}
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
+
+#include "../dllapi_undefine.inc"
+#endif /* SGD2MODULEMANAGER_SGD2MM_MODULE_MANAGER_H_ */

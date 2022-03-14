@@ -19,33 +19,21 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#include <windows.h>
+#ifndef SGD2MODULEMANAGER_MODULE_MANAGER_MODULE_MANAGER_GLOBAL_H_
+#define SGD2MODULEMANAGER_MODULE_MANAGER_MODULE_MANAGER_GLOBAL_H_
 
-#include "module_manager/module_manager_global.h"
-#include "module_manager/module_manager_struct.h"
-#include "hash/hash_crypt_provider.h"
-#include "hash/hash_crypt_public_key.h"
+#include "module_manager_struct.h"
 
-BOOL WINAPI DllMain(HINSTANCE dll_handle, DWORD reason, LPVOID reserved) {
-  switch (reason) {
-    case DLL_PROCESS_ATTACH: {
-      global_module_manager = ModuleManager_Init(MODULE_MANAGER_DIR);
-      Hash_GlobalCryptProvider_Init();
-      Hash_GlobalCryptPublicKey_Init();
-      break;
-    }
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-    case DLL_PROCESS_DETACH: {
-      Hash_GlobalCryptPublicKey_Deinit();
-      Hash_GlobalCryptProvider_Deinit();
-      ModuleManager_Deinit(&global_module_manager);
-      break;
-    }
+#define MODULE_MANAGER_DIR L"./SGD2ModuleManager"
 
-    default: {
-      break;
-    }
-  }
+extern struct ModuleManager global_module_manager;
 
-  return TRUE;
-}
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
+
+#endif /* SGD2MODULEMANAGER_MODULE_MANAGER_MODULE_MANAGER_GLOBAL_H_ */

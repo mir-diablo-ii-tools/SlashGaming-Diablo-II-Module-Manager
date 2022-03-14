@@ -19,33 +19,10 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#include <windows.h>
-
-#include "module_manager/module_manager_global.h"
-#include "module_manager/module_manager_struct.h"
-#include "hash/hash_crypt_provider.h"
-#include "hash/hash_crypt_public_key.h"
-
-BOOL WINAPI DllMain(HINSTANCE dll_handle, DWORD reason, LPVOID reserved) {
-  switch (reason) {
-    case DLL_PROCESS_ATTACH: {
-      global_module_manager = ModuleManager_Init(MODULE_MANAGER_DIR);
-      Hash_GlobalCryptProvider_Init();
-      Hash_GlobalCryptPublicKey_Init();
-      break;
-    }
-
-    case DLL_PROCESS_DETACH: {
-      Hash_GlobalCryptPublicKey_Deinit();
-      Hash_GlobalCryptProvider_Deinit();
-      ModuleManager_Deinit(&global_module_manager);
-      break;
-    }
-
-    default: {
-      break;
-    }
-  }
-
-  return TRUE;
-}
+#if defined(SGD2MM_DLLEXPORT)
+  #define DLLAPI __declspec(dllexport)
+#elif defined(SGD2MM_DLLIMPORT)
+  #define DLLAPI __declspec(dllimport)
+#else
+  #define DLLAPI
+#endif

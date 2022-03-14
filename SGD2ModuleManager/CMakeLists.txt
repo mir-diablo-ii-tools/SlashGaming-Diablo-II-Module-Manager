@@ -77,6 +77,16 @@ set(MODULE
     "src/module.h"
 )
 
+set(MODULE_MANAGER
+    "src/module_manager/module_manager_global.c"
+    "src/module_manager/module_manager_global.h"
+    "src/module_manager/module_manager_struct.c"
+    "src/module_manager/module_manager_struct.h"
+
+    "include/sgd2mm/module_manager.h"
+    "src/sgd2mm/module_manager.c"
+)
+
 set(SOURCE_FILES
     ${RESOURCE_FILES}
 
@@ -84,6 +94,10 @@ set(SOURCE_FILES
     ${FILE_OPERATION}
     ${HASH}
     ${MODULE}
+    ${MODULE_MANAGER}
+
+    "include/dllapi_define.inc"
+    "include/dllapi_undefine.inc"
 
     "src/dll_main.c"
 
@@ -101,6 +115,12 @@ set(SOURCE_FILES
 
 # Output DLL
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+
+target_compile_definitions(${PROJECT_NAME}
+    PRIVATE SGD2MM_DLLEXPORT
+    INTERFACE SGD2MM_DLLIMPORT)
+
+target_include_directories(${PROJECT_NAME} PUBLIC "include")
 
 target_link_libraries(${PROJECT_NAME} shlwapi)
 
