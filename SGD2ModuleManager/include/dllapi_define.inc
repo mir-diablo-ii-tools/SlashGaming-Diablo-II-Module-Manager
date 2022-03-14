@@ -19,9 +19,9 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if defined(SGD2MODULEMANAGER_DLLEXPORT)
+#if defined(SGD2MM_DLLEXPORT)
   #define DLLAPI __declspec(dllexport)
-#elif defined(SGD2MODULEMANAGER_DLLIMPORT)
+#elif defined(SGD2MM_DLLIMPORT)
   #define DLLAPI __declspec(dllimport)
 #else
   #define DLLAPI
