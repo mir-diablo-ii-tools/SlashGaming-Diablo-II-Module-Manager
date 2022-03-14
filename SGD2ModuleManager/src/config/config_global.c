@@ -19,38 +19,8 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
+#include "config_global.h"
 
-#include "config/config_ini.h"
-#include "config/config_struct.h"
+#include "config_struct.h"
 
-#define GLOBAL_CONFIG_PATH L"./SGD2ModuleManager.ini"
-
-static struct Config global_config;
-
-static void InitGlobalConfig(void) {
-  static int is_init = 0;
-
-  if (is_init) {
-    return;
-  }
-
-  global_config = ConfigIni_Read(GLOBAL_CONFIG_PATH);
-  is_init = 1;
-}
-
-/**
- * External
- */
-
-struct Config* Config_Get(void) {
-  InitGlobalConfig();
-
-  return &global_config;
-}
-
-void Config_Write(void) {
-  InitGlobalConfig();
-
-  ConfigIni_Write(&global_config, GLOBAL_CONFIG_PATH);
-}
+struct Config global_config;

@@ -38,16 +38,16 @@ set(RESOURCE_FILES
 set(CONFIG_PARSER
     "src/config/config_default.c"
     "src/config/config_default.h"
+    "src/config/config_global.c"
+    "src/config/config_global.h"
 
     "src/config/config_ini_key.h"
     "src/config/config_ini_reader.c"
     "src/config/config_ini_writer.c"
     "src/config/config_ini.h"
 
+    "src/config/config_struct.c"
     "src/config/config_struct.h"
-
-    "src/config.c"
-    "src/config.h"
 )
 
 set(FILE_OPERATION

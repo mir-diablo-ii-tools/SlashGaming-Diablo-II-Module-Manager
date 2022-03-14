@@ -27,7 +27,8 @@
 #include <windows.h>
 #include <shlwapi.h>
 
-#include "../config.h"
+#include "../config/config_global.h"
+#include "../config/config_struct.h"
 #include "../error.h"
 #include "../filew.h"
 #include "../file/file_count.h"
