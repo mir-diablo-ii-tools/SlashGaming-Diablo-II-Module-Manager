@@ -19,19 +19,8 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#ifndef SGD2MODULEMANAGER_MODULE_MANAGER_INTERNAL_H_
-#define SGD2MODULEMANAGER_MODULE_MANAGER_INTERNAL_H_
+#include "module_manager_global.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+#include "module_manager_struct.h"
 
-void ModuleManager_LoadModules(void);
-
-void ModuleManager_UnloadModules(void);
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif /* __cplusplus */
-
-#endif /* SGD2MODULEMANAGER_MODULE_MANAGER_INTERNAL_H_ */
+struct ModuleManager global_module_manager;

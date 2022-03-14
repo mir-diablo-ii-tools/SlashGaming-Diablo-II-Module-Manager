@@ -19,26 +19,43 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#ifndef SGD2MODULEMANAGER_MODULE_MANAGER_H_
-#define SGD2MODULEMANAGER_MODULE_MANAGER_H_
+#ifndef SGD2MODULEMANAGER_MODULE_MANAGER_MODULE_MANAGER_STRUCT_H_
+#define SGD2MODULEMANAGER_MODULE_MANAGER_MODULE_MANAGER_STRUCT_H_
 
-#include "dllapi_define.inc"
+#include <stddef.h>
+#include <windows.h>
+
+#include "../module.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-typedef void (*ModuleManager_FunctionType)(void* context);
+struct ModuleManager {
+  wchar_t root_dir[MAX_PATH];
+  wchar_t modules_dir[MAX_PATH];
+  wchar_t modules_signature_dir[MAX_PATH];
+  wchar_t modules_config_dir[MAX_PATH];
 
-DLLAPI void ModuleManager_GetFunctions(
-    ModuleManager_FunctionType* functions,
-    const char* exported_name);
+  struct Module* modules;
+  size_t modules_capacity;
+  size_t modules_count;
+};
 
-DLLAPI void ModuleManager_GetFunctionsCount(const char* exported_name);
+#define MODULE_MANAGER_UNINIT { 0 }
+
+extern const struct ModuleManager ModuleManager_kUninit;
+
+struct ModuleManager ModuleManager_Init(const wchar_t* path);
+
+void ModuleManager_Deinit(struct ModuleManager* module_manager);
+
+void ModuleManager_LoadModules(struct ModuleManager* module_manager);
+
+void ModuleManager_UnloadModules(struct ModuleManager* module_manager);
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#include "dllapi_undefine.inc"
-#endif /* SGD2MODULEMANAGER_MODULE_MANAGER_H_ */
+#endif /* SGD2MODULEMANAGER_MODULE_MANAGER_MODULE_MANAGER_STRUCT_H_ */

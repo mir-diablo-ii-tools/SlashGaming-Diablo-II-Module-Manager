@@ -78,11 +78,13 @@ set(MODULE
 )
 
 set(MODULE_MANAGER
-    "src/module_manager_internal.c"
-    "src/module_manager_internal.h"
+    "src/module_manager/module_manager_global.c"
+    "src/module_manager/module_manager_global.h"
+    "src/module_manager/module_manager_struct.c"
+    "src/module_manager/module_manager_struct.h"
 
-    "include/module_manager.h"
-    "src/module_manager.c"
+    "include/sgd2mm/module_manager.h"
+    "src/sgd2mm/module_manager.c"
 )
 
 set(SOURCE_FILES
