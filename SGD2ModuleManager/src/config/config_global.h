@@ -19,19 +19,21 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#ifndef SGD2MODULEMANAGER_CONFIG_CONFIG_STRUCT_H_
-#define SGD2MODULEMANAGER_CONFIG_CONFIG_STRUCT_H_
+#ifndef SGD2MODULEMANAGER_CONFIG_CONFIG_GLOBAL_H_
+#define SGD2MODULEMANAGER_CONFIG_CONFIG_GLOBAL_H_
 
-#include <wchar.h>
+#include "config_struct.h"
 
-struct Config {
-  int is_offline_mode;
-};
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-struct Config Config_Init(const wchar_t* path);
+#define GLOBAL_CONFIG_PATH L"./SGD2ModuleManager.ini"
 
-void Config_Deinit(struct Config* config);
+extern struct Config global_config;
 
-void Config_Write(const struct Config* config, const wchar_t* path);
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
 
-#endif /* SGD2MODULEMANAGER_CONFIG_CONFIG_STRUCT_H_ */
+#endif /* SGD2MODULEMANAGER_CONFIG_CONFIG_GLOBAL_H_ */

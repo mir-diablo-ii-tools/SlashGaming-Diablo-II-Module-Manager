@@ -19,21 +19,27 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#ifndef SGD2MODULEMANAGER_CONFIG_H_
-#define SGD2MODULEMANAGER_CONFIG_H_
+#include "config_struct.h"
 
-#include "config/config_struct.h"
+#include <wchar.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+#include "config_ini.h"
 
-struct Config* Config_Get(void);
+/**
+ * External
+ */
 
-void Config_Write(void);
+struct Config Config_Init(const wchar_t* path) {
+  struct Config config;
 
-#ifdef __cplusplus
-} /* extern "C" */
-#endif /* __cplusplus */
+  config = ConfigIni_Read(path);
 
-#endif /* SGD2MODULEMANAGER_CONFIG_H_ */
+  return config;
+}
+
+void Config_Deinit(struct Config* config) {
+}
+
+void Config_Write(const struct Config* config, const wchar_t* path) {
+  ConfigIni_Write(config, path);
+}
