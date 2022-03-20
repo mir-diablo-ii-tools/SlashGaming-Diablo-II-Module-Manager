@@ -26,17 +26,19 @@
 #include "error.h"
 #include "filew.h"
 
-/**
- * External
- */
+static OSVERSIONINFOW global_os_version_info;
 
-int Win9x_IsRunningOs(void) {
+static void InitGlobalOsVersionInfo() {
+  static int is_init = 0;
+
   BOOL is_get_version_success;
 
-  OSVERSIONINFOW os_version_info;
+  if (is_init) {
+    return;
+  }
 
-  os_version_info.dwOSVersionInfoSize = sizeof(os_version_info);
-  is_get_version_success = GetVersionExW(&os_version_info);
+  global_os_version_info.dwOSVersionInfoSize = sizeof(global_os_version_info);
+  is_get_version_success = GetVersionExW(&global_os_version_info);
   if (!is_get_version_success) {
     Error_ExitWithFormatMessage(
         __FILEW__,
@@ -46,8 +48,19 @@ int Win9x_IsRunningOs(void) {
     goto bad;
   }
 
-  return os_version_info.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS;
+  is_init = 1;
+  return;
 
 bad:
-  return 0;
+  return;
+}
+
+/**
+ * External
+ */
+
+int Win9x_IsRunningOs(void) {
+  InitGlobalOsVersionInfo();
+
+  return global_os_version_info.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS;
 }
