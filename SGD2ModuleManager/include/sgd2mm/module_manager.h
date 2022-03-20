@@ -31,6 +31,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
+DLLAPI void Sgd2mm_Init(void);
+
+DLLAPI void Sgd2mm_Deinit(void);
+
 DLLAPI size_t Sgd2mm_GetModulesFunctions(
     FARPROC* functions,
     const char* exported_name);
