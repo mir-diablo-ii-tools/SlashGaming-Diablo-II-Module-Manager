@@ -21,9 +21,24 @@
 
 #include <windows.h>
 
+#include "error.h"
+#include "filew.h"
+
 BOOL WINAPI DllMain(HINSTANCE dll_handle, DWORD reason, LPVOID reserved) {
   switch (reason) {
     case DLL_PROCESS_ATTACH: {
+      BOOL is_disable_thread_library_calls_success;
+
+      is_disable_thread_library_calls_success = DisableThreadLibraryCalls(
+          (HMODULE)dll_handle);
+      if (!is_disable_thread_library_calls_success) {
+        Error_ExitWithFormatMessage(
+            __FILEW__,
+            __LINE__,
+            L"DisableThreadLibraryCalls failed with error code 0x%X.",
+            GetLastError());
+        goto bad;
+      }
       break;
     }
 
@@ -33,4 +48,7 @@ BOOL WINAPI DllMain(HINSTANCE dll_handle, DWORD reason, LPVOID reserved) {
   }
 
   return TRUE;
+
+bad:
+  return FALSE;
 }
